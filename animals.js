@@ -3,7 +3,7 @@ const animals = [
     { name: '地包天', features: [0, 3, 5, 8, 10] },
     { name: '瓦力', features: [0, 4, 9] },
     { name: '莫斯', features: [0, 4, 9] },
-    { name: '柯斯蒂', features: [0, 3, 5, 10] },
+    { name: '柯蒂斯', features: [0, 3, 5, 10] },
     { name: '暴莉', features: [0, 1] },
     { name: '咩咩', features: [0, 4, 5] },
     { name: '阿宝', features: [0, 1, 2, 3, 4, 5, 10] },
@@ -60,17 +60,22 @@ let selectedFeatures = [];
 
 function toggleFeature(feature) {
     const index = selectedFeatures.indexOf(feature);
+    const button = document.querySelector(`.category-btn[onclick="toggleFeature(${feature})"]`); // 获取当前按钮
+
     if (index === -1) {
         selectedFeatures.push(feature); // 添加特征
+        button.classList.add("selected"); // 添加选中样式
     } else {
         selectedFeatures.splice(index, 1); // 移除特征
+        button.classList.remove("selected"); // 移除选中样式
     }
+
     displayResults();
 }
 
 function displayResults() {
     const resultList = document.getElementById("resultList");
-    resultList.innerHTML = ""; // 清空之前的结果
+    resultList.innerHTML = "";
 
     const matches = animals.filter(animal => {
         return selectedFeatures.every(feature => animal.features.includes(feature));
@@ -79,9 +84,21 @@ function displayResults() {
     if (matches.length === 0) {
         resultList.innerHTML = "<li>未找到匹配的动物</li>";
     } else {
-        matches.forEach(animal => {
+        matches.forEach((animal, index) => {
             const li = document.createElement("li");
-            li.textContent = animal.name;
+            
+            // 创建头像
+            const avatar = document.createElement("img");
+            avatar.src = `images/${animal.name}.png`;  // 使用动物名字作为头像文件名
+            avatar.alt = `${animal.name} 的头像`;
+              avatar.classList.add("animal-avatar");
+
+            // 创建名字
+            const name = document.createElement("span");
+            name.textContent = animal.name;
+
+            li.appendChild(avatar);
+            li.appendChild(name);
             resultList.appendChild(li);
         });
     }

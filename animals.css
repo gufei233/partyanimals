@@ -1,3 +1,33 @@
+.header {
+    display: flex;
+    align-items: center; 
+    justify-content: center; 
+    gap: 15px; 
+}
+
+.logo {
+    width: 80px; /* 设置 Logo 宽度 */
+    height: auto; /* 高度自适应 */
+    border-radius: 8px; /* 圆角效果 */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* 添加阴影 */
+}
+
+@media (max-width: 600px) {
+    .logo {
+        width: 60px; 
+    }
+    h1 {
+        font-size: 1.5rem; 
+    }
+}
+
+@media (max-width: 600px) {
+    .animal-avatar {
+        width: 25px;
+        height: 25px;
+    }
+}
+
 body {
     font-family: Arial, sans-serif;
     background-color: #f7f7f7;
@@ -12,9 +42,11 @@ body {
 }
 
 h1 {
+    margin: 0; 
     background-color: #333;
     color: white;
-    padding: 15px 0;
+    padding: 15px 20px;
+    border-radius: 5px;
 }
 
 .category-buttons {
@@ -36,6 +68,17 @@ h1 {
     transition: background-color 0.3s;
 }
 
+.category-btn.selected {
+    background-color: #ff9800;
+    box-shadow: 0 0 8px rgba(255, 152, 0, 0.5);
+}
+
+/* 选中按钮的悬停效果（保持不变） */
+.category-btn.selected:hover {
+    background-color: #ff9800; /* 保持选中颜色 */
+    box-shadow: 0 0 12px rgba(255, 152, 0, 0.8); /* 可以增强阴影效果 */
+}
+
 .category-btn:hover {
     background-color: #45a049;
 }
@@ -47,4 +90,36 @@ h1 {
 #resultList {
     list-style-type: none;
     padding: 0;
+}
+
+/* 动物列表项样式 */
+#resultList li {
+    display: flex;
+    flex-direction: column; /* 让头像和名字垂直排列 */
+    align-items: center; /* 居中对齐 */
+    gap: 10px; /* 头像和名字之间的间距 */
+    padding: 15px 0; /* 增加上下间距 */
+}
+
+
+/* 头像样式 */
+.animal-avatar {
+    width: 60px; 
+    height: 60px; 
+    border-radius: 50%; 
+    border: 2px solid #4CAF50; 
+    object-fit: cover; 
+    transition: transform 0.3s ease; 
+}
+
+.animal-avatar:hover {
+    transform: scale(1.2); 
+    transition: transform 0.3s ease; 
+}
+
+
+#resultList li span {
+    font-size: 1.2rem; 
+    font-weight: bold; 
+    color: #333; 
 }

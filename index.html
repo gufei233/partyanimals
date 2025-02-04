@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>动物特征分类系统</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="images/favicon.ico" type="image/x-icon">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <img src="images/logo.png" alt="动物特征分类系统 Logo" class="logo">
+            <h1>动物特征分类系统</h1>
+        </div>
+        <p>选择特征查看匹配的动物</p>
+        <div class="category-buttons">
+            <!-- 动物特征按钮 -->
+            <button class="category-btn" onclick="toggleFeature(0)">头上有角</button>
+            <button class="category-btn" onclick="toggleFeature(1)">会飞</button>
+            <button class="category-btn" onclick="toggleFeature(2)">会潜水</button>
+            <button class="category-btn" onclick="toggleFeature(3)">会下蛋</button>
+            <button class="category-btn" onclick="toggleFeature(4)">毛茸茸</button>
+            <button class="category-btn" onclick="toggleFeature(5)">眼睛大</button>
+            <button class="category-btn" onclick="toggleFeature(6)">猫科</button>
+            <button class="category-btn" onclick="toggleFeature(7)">犬科</button>
+            <button class="category-btn" onclick="toggleFeature(8)">吃肉</button>
+            <button class="category-btn" onclick="toggleFeature(9)">吃植物</button>
+            <button class="category-btn" onclick="toggleFeature(10)">尾巴长</button>
+        </div>
+        <div class="results">
+            <h2>匹配结果：</h2>
+            <ul id="resultList"></ul>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
+<link rel="stylesheet" href="animals.css">
+<script src="animals.js"></script>
