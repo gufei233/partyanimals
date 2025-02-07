@@ -3,17 +3,17 @@ const animals = [
     { name: '地包天', features: [0, 3, 5, 8, 10] },
     { name: '瓦力', features: [0, 4, 9] },
     { name: '莫斯', features: [0, 4, 9] },
-    { name: '柯蒂斯', features: [0, 3, 5, 10] },
+    { name: '柯蒂斯', features: [0, 3, 5, 9, 10] },
     { name: '暴莉', features: [0, 1] },
     { name: '咩咩', features: [0, 4, 5] },
     { name: '阿宝', features: [0, 1, 2, 3, 4, 5, 10] },
-    { name: '阿瓜', features: [1, 3, 5, 9] },
-    { name: '阿呆', features: [1, 3, 9] },
+    { name: '阿瓜', features: [1, 2, 3, 5, 9] },
+    { name: '阿呆', features: [1, 2, 3, 9] },
     { name: '优罗莎', features: [1, 9] },
     { name: '木木', features: [1, 3, 5, 8] },
     { name: '咕咕', features: [1, 3, 5, 9, 10] },
     { name: '鳄霸', features: [2, 3, 5, 8, 10] },
-    { name: '瓦特', features: [2, 4] },
+    { name: '瓦特', features: [2, 4, 8] },
     { name: '布鲁斯', features: [2, 3, 8, 10] },
     { name: '锤子', features: [2, 3, 8, 10] },
     { name: '图斯卡尔', features: [2, 8] },
@@ -53,7 +53,12 @@ const animals = [
     { name: '桑尼', features: [4, 7, 8] },
     { name: '罗恩', features: [4, 7, 8] },
     { name: '斯黛拉', features: [4, 7, 8] },
-    { name: '泰雷斯', features: [3] }
+    { name: '泰雷斯', features: [3] },
+    { name: '妙妙', features: [6, 4, 8, 10] },
+    { name: '扣扣', features: [2, 8, 3] },
+    { name: '巴巴拉', features: [2, 4, 9] },
+    { name: '糊涂', features: [1, 4, 5, 8, 3] },
+    { name: '坨坨', features: [4, 9] }
 ];
 
 let selectedFeatures = [];
