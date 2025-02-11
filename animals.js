@@ -57,7 +57,7 @@ const animals = [
     { name: '妙妙', features: [6, 4, 8, 10] },
     { name: '扣扣', features: [2, 8, 3] },
     { name: '巴巴拉', features: [2, 4, 9] },
-    { name: '糊涂', features: [1, 4, 5, 8, 3] },
+    { name: '糊涂', features: [1, 5, 8, 3] },
     { name: '坨坨', features: [4, 9] }
 ];
 
