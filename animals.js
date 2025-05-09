@@ -37,7 +37,7 @@ const animals = [
     { name: '雪诺', features: [4, 7, 8, 10] },
     { name: '宝伯', features: [4, 9] },
     { name: '福宝', features: [4, 9] },
-    { name: '奥里', features: [5, 10] },
+    { name: '奥里', features: [2, 5, 10] },
     { name: '嘟嘟', features: [4, 5, 6, 8, 10] },
     { name: '奥姆诺姆', features: [5, 9] },
     { name: '玛奈奇', features: [4, 6, 8, 10] },
