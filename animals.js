@@ -47,7 +47,7 @@ const animals = [
     { name: '培根', features: [9] },
     { name: '白菜狗', features: [7, 9] },
     { name: '小新', features: [9] },
-    { name: '哈士企', features: [2, 5, 7, 8] },
+    { name: '哈士企', features: [2, 4, 5, 7, 8] },
     { name: '斯帕奇', features: [7, 8, 10] },
     { name: '珞珞', features: [4, 7, 8, 10] },
     { name: '桑尼', features: [4, 7, 8] },
