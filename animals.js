@@ -37,7 +37,7 @@ const animals = [
     { name: '雪诺', features: [4, 7, 8, 10] },
     { name: '宝伯', features: [4, 9] },
     { name: '福宝', features: [4, 9] },
-    { name: '奥里', features: [2, 5, 10] },
+    { name: '奥里', features: [2, 5, 9, 10] },
     { name: '嘟嘟', features: [4, 5, 6, 8, 10] },
     { name: '奥姆诺姆', features: [5, 9] },
     { name: '玛奈奇', features: [4, 6, 8, 10] },
@@ -45,21 +45,24 @@ const animals = [
     { name: '星期天', features: [4, 6, 8, 10] },
     { name: '卡洛特', features: [4, 9] },
     { name: '培根', features: [9] },
-    { name: '白菜狗', features: [7, 9] },
+    { name: '白菜狗', features: [9] },
     { name: '小新', features: [9] },
     { name: '哈士企', features: [2, 4, 5, 7, 8] },
     { name: '斯帕奇', features: [7, 8, 10] },
     { name: '珞珞', features: [4, 7, 8, 10] },
-    { name: '桑尼', features: [4, 7, 8] },
+    { name: '桑尼', features: [7, 8] },
     { name: '罗恩', features: [4, 7, 8] },
     { name: '斯黛拉', features: [4, 7, 8] },
     { name: '泰雷斯', features: [3] },
     { name: '妙妙', features: [6, 4, 8, 10] },
-    { name: '扣扣', features: [2, 8, 3] },
+    { name: '丘丘', features: [2, 3, 4, 8] },
     { name: '巴巴拉', features: [2, 4, 9] },
     { name: '糊涂', features: [1, 5, 8, 3] },
-    { name: '坨坨', features: [4, 9] },
-    { name: '瑞文', features: [1, 3, 5, 9, 10] }
+    { name: '坨坨', features: [4, 5, 9, 10] },
+    { name: '瑞文', features: [1, 3, 4, 5, 8] },
+    { name: '2662',    features: [1, 2, 5] },
+    { name: 'Vicksy',  features: [4, 5, 7, 8, 10] },
+    { name: '纳鲁',    features: [9] }
 ];
 
 let selectedFeatures = [];
