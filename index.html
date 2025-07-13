@@ -1,43 +1,62 @@
 <!DOCTYPE html>
 <html lang="zh">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>动物特征分类系统</title>
-  <link rel="stylesheet" href="animals.css?v=20250207">
-  <link rel="icon" href="images/favicon.ico" type="image/x-icon">
+  <link rel="stylesheet" href="animals.css?v=20250713c" />
+  <link rel="icon" href="images/favicon.ico" />
 </head>
+
 <body>
   <div class="container">
+    <!-- 头部 -->
     <div class="header">
-      <img src="images/logo.png" alt="动物特征分类系统 Logo" class="logo">
+      <img src="images/logo.png" alt="logo" class="logo" />
       <h1>动物特征分类系统</h1>
     </div>
-    <p>选择特征查看匹配的动物</p>
-    <div class="category-buttons">
-      <!-- 动物特征按钮 -->
-      <button class="category-btn" onclick="toggleFeature(0)">头上有角</button>
-      <button class="category-btn" onclick="toggleFeature(1)">会飞</button>
-      <button class="category-btn" onclick="toggleFeature(2)">会潜水</button>
-      <button class="category-btn" onclick="toggleFeature(3)">会下蛋</button>
-      <button class="category-btn" onclick="toggleFeature(4)">毛茸茸</button>
-      <button class="category-btn" onclick="toggleFeature(5)">眼睛大</button>
-      <button class="category-btn" onclick="toggleFeature(6)">猫科</button>
-      <button class="category-btn" onclick="toggleFeature(7)">犬科</button>
-      <button class="category-btn" onclick="toggleFeature(8)">吃肉</button>
-      <button class="category-btn" onclick="toggleFeature(9)">吃植物</button>
-      <button class="category-btn" onclick="toggleFeature(10)">尾巴长</button>
+
+    <!-- 吸顶筛选栏 -->
+    <div class="filter-bar">
+      <div class="category-buttons">
+        <!-- 11 个特征按钮 -->
+        <button class="category-btn" onclick="toggleFeature(0)">头上有角</button>
+        <button class="category-btn" onclick="toggleFeature(1)">会飞</button>
+        <button class="category-btn" onclick="toggleFeature(2)">会潜水</button>
+        <button class="category-btn" onclick="toggleFeature(3)">会下蛋</button>
+        <button class="category-btn" onclick="toggleFeature(4)">毛茸茸</button>
+        <button class="category-btn" onclick="toggleFeature(5)">眼睛大</button>
+        <button class="category-btn" onclick="toggleFeature(6)">猫科</button>
+        <button class="category-btn" onclick="toggleFeature(7)">犬科</button>
+        <button class="category-btn" onclick="toggleFeature(8)">吃肉</button>
+        <button class="category-btn" onclick="toggleFeature(9)">吃植物</button>
+        <button class="category-btn" onclick="toggleFeature(10)">尾巴长</button>
+      </div>
     </div>
+
+    <!-- 操作栏：提示文本 + 清空按钮 + 摘要 -->
+    <div class="action-bar">
+      <p id="hintText" class="info-text">选择特征查看匹配的动物</p>
+
+      <button class="primary-btn" onclick="clearAll()">一键清空</button>
+
+      <p id="summaryText" class="info-text"></p>
+    </div>
+
+    <!-- 结果区 -->
     <div class="results">
-      <h2>匹配结果：</h2>
       <ul id="resultList"></ul>
     </div>
   </div>
+
+  <!-- 页脚 -->
   <footer class="copyright">
-    © 2025 顾绯. Powered by 
-    <a href="https://github.com/gufei233/partyanimals" target="_blank">partyanimals</a>
+    © 2025 顾绯. Powered by&nbsp; 
+    <a href="https://github.com/gufei233/partyanimals" target="_blank"
+      >partyanimals</a
+    >
   </footer>
 
-  <script src="animals.js?v=20250713"></script>
+  <script src="animals.js?v=20250713c"></script>
 </body>
 </html>

@@ -1,4 +1,10 @@
-// 动物数据
+/* ---------- 特征映射 ---------- */
+const featureNames = [
+  '头上有角的动物','会飞的动物','会潜水的动物','会下蛋的动物','毛茸茸的动物',
+  '眼睛大的动物','猫科动物','犬科动物','吃肉的动物','吃植物的动物','尾巴长的动物'
+];
+
+/* ---------- 动物数据 ---------- */
 const animals = [
     { name: '地包天', features: [0, 3, 5, 8, 10] },
     { name: '瓦力', features: [0, 4, 9] },
@@ -53,62 +59,72 @@ const animals = [
     { name: '桑尼', features: [7, 8] },
     { name: '罗恩', features: [4, 7, 8] },
     { name: '斯黛拉', features: [4, 7, 8] },
-    { name: '泰雷斯', features: [3] },
-    { name: '妙妙', features: [6, 4, 8, 10] },
+    { name: '泰雷斯', features: [2, 3] },
+    { name: '妙妙', features: [4, 6, 8, 10] },
     { name: '丘丘', features: [2, 3, 4, 8] },
     { name: '巴巴拉', features: [2, 4, 9] },
-    { name: '糊涂', features: [1, 5, 8, 3] },
+    { name: '糊涂', features: [1, 3, 5, 8] },
     { name: '坨坨', features: [4, 5, 9, 10] },
     { name: '瑞文', features: [1, 3, 4, 5, 8] },
-    { name: '2662',    features: [1, 2, 5] },
-    { name: 'Vicksy',  features: [4, 5, 7, 8, 10] },
-    { name: '纳鲁',    features: [9] }
+    { name: '2662', features: [1, 2, 5] },
+    { name: 'Vicksy', features: [4, 5, 7, 8, 10] },
+    { name: '纳鲁', features: [9] }
 ];
 
+
+/* ---------- 状态 ---------- */
 let selectedFeatures = [];
 
-function toggleFeature(feature) {
-    const index = selectedFeatures.indexOf(feature);
-    const button = document.querySelector(`.category-btn[onclick="toggleFeature(${feature})"]`); // 获取当前按钮
-
-    if (index === -1) {
-        selectedFeatures.push(feature); // 添加特征
-        button.classList.add("selected"); // 添加选中样式
-    } else {
-        selectedFeatures.splice(index, 1); // 移除特征
-        button.classList.remove("selected"); // 移除选中样式
-    }
-
-    displayResults();
+/* ---------- 交互 ---------- */
+function toggleFeature(index){
+  const btn = document.querySelectorAll('.category-btn')[index];
+  if(selectedFeatures.includes(index)){
+    selectedFeatures = selectedFeatures.filter(i => i !== index);
+    btn.classList.remove('selected');
+  }else{
+    selectedFeatures.push(index);
+    btn.classList.add('selected');
+  }
+  displayResults();
 }
 
-function displayResults() {
-    const resultList = document.getElementById("resultList");
-    resultList.innerHTML = "";
+function clearAll(){
+  selectedFeatures = [];
+  document.querySelectorAll('.category-btn').forEach(btn=>btn.classList.remove('selected'));
+  displayResults();
+}
 
-    const matches = animals.filter(animal => {
-        return selectedFeatures.every(feature => animal.features.includes(feature));
+/* ---------- 结果渲染 ---------- */
+function displayResults(){
+  const resultList  = document.getElementById('resultList');
+  const summaryText = document.getElementById('summaryText');
+  resultList.innerHTML = '';
+
+  /* 1) 过滤匹配 */
+  const matches = animals.filter(a =>
+    selectedFeatures.every(f => a.features.includes(f))
+  );
+
+  /* 2) 渲染卡片或空状态 */
+  if(matches.length){
+    matches.forEach(a=>{
+      const li   = document.createElement('li');  li.className = 'card';
+      const img  = document.createElement('img'); img.src = `images/${a.name}.png`; img.alt = a.name; img.className = 'animal-avatar';
+      const name = document.createElement('span'); name.textContent = a.name;
+      li.append(img,name); resultList.appendChild(li);
     });
+  }else{
+    resultList.innerHTML = '<li>未找到匹配的动物</li>';
+  }
 
-    if (matches.length === 0) {
-        resultList.innerHTML = "<li>未找到匹配的动物</li>";
-    } else {
-        matches.forEach((animal, index) => {
-            const li = document.createElement("li");
-            
-            // 创建头像
-            const avatar = document.createElement("img");
-            avatar.src = `images/${animal.name}.png`;  // 使用动物名字作为头像文件名
-            avatar.alt = `${animal.name} 的头像`;
-              avatar.classList.add("animal-avatar");
-
-            // 创建名字
-            const name = document.createElement("span");
-            name.textContent = animal.name;
-
-            li.appendChild(avatar);
-            li.appendChild(name);
-            resultList.appendChild(li);
-        });
-    }
+  /* 3) 更新 summary 文案 —— 关键改动 */
+  if(selectedFeatures.length){
+    const tags = selectedFeatures.map(i => featureNames[i]).join('、');
+    summaryText.textContent = `${tags}，共 ${matches.length} 个`;
+  }else{
+    summaryText.textContent = `所有动物，共 ${animals.length} 个`;
+  }
 }
+
+/* ---------- 初始化 ---------- */
+document.addEventListener('DOMContentLoaded', displayResults);
