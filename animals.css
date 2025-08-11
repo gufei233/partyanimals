@@ -29,27 +29,19 @@ body{
 .container{width:90%;max-width:960px;margin:0 auto;flex:1;text-align:center}
 
 /* 头部 -------------------------------------------------------- */
-.header{display:flex;align-items:center;justify-content:center;gap:30px;margin-top:20px}
+.header{display:flex;align-items:center;justify-content:center;gap:30px;margin-top:20px;margin-bottom:0;} /* 修改：header 和 main 之间的距离由 main.marginTop 控制 */
+
 .logo{width:80px;border-radius:8px;box-shadow:0 0 10px rgba(0,0,0,.1)}
-/* === 完全居中标题黑框 === */
 h1{
-  display:inline-flex;          /* 把标题自身当成 inline-flex 盒 */
-  align-items:center;           /* 垂直居中 */
-  justify-content:center;       /* 水平居中 */
-  
-  height:70px;                  /* 黑框固定高，可再调整 */
-  padding:0 40px;               /* 左右保持呼吸感 */
-  
-  font-size:2.2rem;
-  font-weight:700;
-  letter-spacing:.06em;
-  background:#333;
-  color:#fff;
-  border-radius:6px;
-  line-height:1;                /* 避免行高撑开 */
-  margin:0;                     /* 清除外距 */
+  display:inline-flex; align-items:center; justify-content:center;
+  height:70px; padding:0 40px; font-size:2.2rem;
+  font-weight:700; letter-spacing:.06em; background:#333;
+  color:#fff; border-radius:6px; line-height:1; margin:0;
 }
 @media(max-width:600px){.logo{width:60px}h1{font-size:1.6rem;padding:10px 24px}}
+
+/* 主内容区 ---------------------------------------------------- */
+main { margin-top: 20px; }
 
 /* 筛选栏 ------------------------------------------------------ */
 .filter-bar{position:sticky;top:0;z-index:10;background:var(--bg);padding:10px 0;border-bottom:1px solid #e0e0e0}
@@ -61,16 +53,24 @@ h1{
   background:linear-gradient(135deg,var(--grad-start) 0%,var(--grad-end) 100%);
   color:#fff;
   border:none;
-  border-radius:8px;                        /* 与一键清空保持一致 */
+  border-radius:8px;
   padding:10px 26px;
   font-size:15px;
   letter-spacing:.5px;
   cursor:pointer;
   box-shadow:0 4px 10px rgba(0,0,0,.15);
-  transition:background .25s,box-shadow .25s,transform .15s;
+  transition:background .25s,box-shadow .25s,transform .15s, opacity .25s;
 }
 .category-btn:hover,.primary-btn:hover{transform:translateY(-2px)}
 .category-btn:focus-visible,.primary-btn:focus-visible{outline:3px solid rgba(255,255,255,.6)}
+
+/* 【新增】按钮禁用样式 */
+.primary-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: 0 4px 10px rgba(0,0,0,.1);
+}
 
 /* 特征按钮选中态 ------------------------------------------------ */
 .category-btn.selected{
@@ -81,12 +81,11 @@ h1{
 
 /* 操作栏 ------------------------------------------------------ */
 .action-bar{margin-top:25px;display:flex;flex-direction:column;align-items:center;gap:12px}
-/* ========= 提示 & 摘要通用文本（hintText / summaryText） ========= */
 .info-text{
   color:#1976d2;
   font-size:16px;
   line-height:1.4;
-  margin:0;          /* 与按钮紧凑对齐 */
+  margin:0;
 }
 
 /* 结果栅格 ---------------------------------------------------- */

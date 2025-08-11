@@ -3,16 +3,16 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>动物特征分类</title>
-  <link rel="stylesheet" href="animals.css?v=20250811f" />
+  <title>成就地图分类</title>
+  <!-- 复用现有样式 -->
+  <link rel="stylesheet" href="animals.css?v=achv-static-20250811" />
   <link rel="icon" href="images/favicon.ico" />
 </head>
-
 <body>
   <div class="container">
     <header class="header">
       <img src="images/logo.png" alt="logo" class="logo" />
-      <h1>动物特征分类</h1>
+      <h1>成就地图分类</h1>
     </header>
 
     <main>
@@ -21,14 +21,13 @@
       </div>
 
       <div class="action-bar">
-        <a class="info-text" href="achievements.html" style="text-decoration:none">
-          点击进入成就分类页面
+        <!-- 返回动物特征分类页面 -->
+        <a class="info-text" href="index.html" style="text-decoration:none">
+          ← 返回动物特征分类页面
         </a>
 
-        <p id="hintText" class="info-text">选择特征查看匹配的动物</p>
-
-
-        <button id="clearButton" class="primary-btn">一键清空</button>
+        <p id="hintText" class="info-text">选择地图查看对应的成就</p>
+        <button id="clearButton" class="primary-btn" onclick="clearAll()">一键清空</button>
         <p id="summaryText" class="info-text" aria-live="polite"></p>
       </div>
 
@@ -43,6 +42,6 @@
     <a href="https://github.com/gufei233/partyanimals" target="_blank">partyanimals</a>
   </footer>
 
-  <script src="animals.js?v=20250811f"></script>
+  <script src="achievements.js?v=achv-static-20250811i"></script>
 </body>
 </html>
