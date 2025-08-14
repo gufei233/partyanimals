@@ -87,6 +87,13 @@ main { margin-top: 20px; }
   line-height:1.4;
   margin:0;
 }
+/* 新增：移除 action-bar 中链接的下划线 */
+.action-bar a.info-text {
+  text-decoration: none;
+}
+.action-bar a.info-text:hover {
+  text-decoration: underline;
+}
 
 /* 结果栅格 ---------------------------------------------------- */
 .results{margin-top:20px}
@@ -94,6 +101,7 @@ main { margin-top: 20px; }
 .card{
   background:#fff;border-radius:12px;padding:15px;box-shadow:0 2px 8px rgba(0,0,0,.05);
   display:flex;flex-direction:column;align-items:center;animation:fadeIn .3s ease forwards;
+  transition: transform 0.2s ease; /* 统一 transition */
 }
 .card:hover{transform:translateY(-2px)}
 @media(prefers-color-scheme:dark){.card{background:#2b2b2b}}
@@ -101,6 +109,14 @@ main { margin-top: 20px; }
 .animal-avatar{width:80px;height:80px;border-radius:50%;border:4px solid var(--primary);object-fit:cover;transition:transform .3s}
 .animal-avatar:hover{transform:scale(1.2)}
 .card span{margin-top:8px;font-size:1.1rem;font-weight:500}
+
+/* 成就卡片内的小字说明 */
+.card small {
+  margin-top: 6px;
+  opacity: 0.8;
+  font-size: 0.85rem; /* 调整字体大小以适应卡片 */
+}
+
 
 @keyframes fadeIn{from{opacity:0;transform:scale(.95)}to{opacity:1;transform:scale(1)}}
 
@@ -114,3 +130,10 @@ footer.copyright a:visited{color:var(--primary);text-decoration:none}
 footer.copyright a:hover,
 footer.copyright a:active{color:var(--primary-dark);text-decoration:underline}
 @media(max-width:600px){footer.copyright{font-size:.8rem;padding:15px 0}}
+
+/* 在手机等小屏幕设备上将页面缩放至75% */
+@media (max-width: 768px) {
+  body {
+    zoom: 0.75;
+  }
+}
