@@ -175,7 +175,7 @@ document.addEventListener('DOMContentLoaded', () => {
         li.className = 'card';
         
         const img = document.createElement('img');
-        img.src = `images/${animal.name}.png`;
+        img.src = `images/animals/${animal.name}.png`;
         img.alt = animal.name;
         img.className = 'animal-avatar';
         img.loading = 'lazy';

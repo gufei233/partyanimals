@@ -2,7 +2,7 @@
 
 这是一个为游戏《猛兽派对》（Party Animals）玩家制作的轻量级Web助手工具。它提供了两个主要功能页面，帮助玩家快速查询和筛选游戏内的动物角色和成就信息。项目完全基于前端技术，无需后端支持，响应迅速，部署简单。
 
-![项目截图](images/screenshot.png) 
+![项目截图](images/assets/screenshot.png) 
 
 ## 主要功能
 
@@ -36,8 +36,10 @@
 ├── achievements.html   # 成就地图分类页面
 ├── animals.css         # CSS样式文件
 ├── app.js              # 核心JavaScript逻辑文件
-├── images/             # 存放动物头像、Logo、成就图标等图片
+├── images/             # 图片资源目录
 │   ├── achievements/   # 存放成就图标
+│   ├── animals/        # 存放动物头像
+│   ├── assets/         # 存放网页资源图（Logo、favicon、截图）
 │   └── ...
 └── README.md           # 本文件
 ```
