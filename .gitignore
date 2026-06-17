@@ -1,0 +1,16 @@
+/.venv/
+
+# Python cache
+__pycache__/
+*.py[cod]
+
+# Rebuildable game analysis artifacts
+/analysis/decrypted/
+/analysis/extracted/
+/analysis/il2cppdump_out*/
+/analysis/httpserver.*.log
+/analysis/metadata_interest_strings.txt
+/analysis/party_animals_asset_scan.json
+
+# Optional reverse-engineering tools downloaded for investigation
+/tools/Il2CppDumper/

@@ -1,5 +1,11 @@
 /* 主题 & 字体 -------------------------------------------------- */
-@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;700&display=swap");
+@font-face{
+  font-family:"Noto Sans SC Local";
+  src:url("fonts/NotoSansSC-VF.ttf") format("truetype");
+  font-weight:100 900;
+  font-style:normal;
+  font-display:swap;
+}
 
 :root{
   --primary:#4caf50;      --primary-dark:#388e3c;
@@ -22,7 +28,7 @@
 /* 基础布局 ---------------------------------------------------- */
 *{box-sizing:border-box;margin:0;padding:0}
 body{
-  font-family:"Noto Sans SC",Arial,sans-serif;
+  font-family:"Noto Sans SC Local","Noto Sans SC",Arial,sans-serif;
   background:var(--bg);color:var(--text);
   min-height:100vh;display:flex;flex-direction:column;
 }

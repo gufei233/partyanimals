@@ -1,45 +1,54 @@
-# 猛兽派对助手 (Party Animals Helper)
+# 猛兽派对助手
 
-这是一个为游戏《猛兽派对》（Party Animals）玩家制作的轻量级Web助手工具。它提供了两个主要功能页面，帮助玩家快速查询和筛选游戏内的动物角色和成就信息。项目完全基于前端技术，无需后端支持，响应迅速，部署简单。
+一个给《猛兽派对》（Party Animals）做的静态查询站点。
 
-![项目截图](images/assets/screenshot.png) 
+它包含两个页面：
 
-## 主要功能
+- 动物特征分类
+- 成就地图分类
 
-- **双功能页面**：包含 **动物特征分类** 和 **成就地图分类** 两个独立页面。
-- **动态实时筛选**：
-    - 在动物页面，支持**多选**特征进行“与”逻辑筛选（例如，同时拥有“毛茸茸”和“会飞”特征的动物）。
-    - 在成就页面，支持**单选**地图进行筛选，展示该地图下的所有成就。
-- **纯客户端**：所有数据和筛选逻辑均在浏览器端通过 JavaScript 完成，加载速度快，可离线使用。
-- **统一化代码**：项目采用单个智能 `app.js` 脚本驱动两个页面，根据页面标题自动适配不同的数据源和筛选逻辑（多选/单选）。
-- **响应式设计**：
-    - 页面布局在桌面端和移动端均有良好表现。
-    - **针对移动端优化**：在小屏幕设备上（如手机），页面会整体缩放至75%，以在有限空间内展示更多信息，方便快速浏览。
+全部在浏览器端完成，没有后端依赖。站点资源来自游戏数据同步生成，支持离线使用。
 
-## 🛠️ 技术栈
+## 功能
 
-- **HTML5**
-- **CSS3**:
-    - Flexbox & Grid 布局
-    - CSS Variables (自定义属性)
-    - 媒体查询 (Media Queries)
-    - `zoom` 属性
-- **JavaScript (ES6+)**:
-    - 无任何框架或库（Vanilla JS）
-    - DOM 操作 & 事件处理
+- 动物页支持多选特征筛选
+- 成就页支持单选地图筛选
+- 动物显示中文名、本体图片和特征
+- 成就显示图标、名称和条件
+- 使用本地离线字体 `fonts/NotoSansSC-VF.ttf`
 
-## 📁 项目结构
+## 资源来源
 
-```
+站点运行时直接读取这些生成文件：
+
+- `data/animals.generated.js`
+- `data/achievements.generated.js`
+- `images/animals/`
+- `images/achievements/`
+
+`images/assets/` 提供站点图标和截图。
+
+## 文件结构
+
+```text
 /
-├── index.html          # 动物特征分类页面
-├── achievements.html   # 成就地图分类页面
-├── animals.css         # CSS样式文件
-├── app.js              # 核心JavaScript逻辑文件
-├── images/             # 图片资源目录
-│   ├── achievements/   # 存放成就图标
-│   ├── animals/        # 存放动物头像
-│   ├── assets/         # 存放网页资源图（Logo、favicon、截图）
-│   └── ...
-└── README.md           # 本文件
+├── index.html
+├── achievements.html
+├── animals.css
+├── app.js
+├── data/
+├── fonts/
+├── images/
+└── README.md
 ```
+
+## 本地使用
+
+直接打开 `index.html` 或 `achievements.html` 即可。
+
+## 说明
+
+- 这是一个纯前端站点
+- 页面逻辑统一由 `app.js` 驱动
+- 资源更新后，站点数据会重新生成并覆盖现有文件
+
