@@ -1357,6 +1357,24 @@ window.PARTY_ANIMALS_SITE_DATA.animals = {
         "吃肉",
         "头上有角"
       ]
+    },
+    {
+      "id": "H0073@1.16",
+      "variantId": "VA0625@1.16",
+      "name": "米卢",
+      "nameEn": "Milou",
+      "image": "images/animals/H0073@1.16.png",
+      "assetId": "AC_007082_Foxterrier_Original_Original_Avatar",
+      "featureIds": [
+        "CanidaeHero",
+        "FurryHero",
+        "MeatEaterHero"
+      ],
+      "features": [
+        "犬科",
+        "毛茸茸",
+        "吃肉"
+      ]
     }
   ]
 };

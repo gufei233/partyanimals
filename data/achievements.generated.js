@@ -7,10 +7,10 @@ window.PARTY_ANIMALS_SITE_DATA.achievements = {
     "achievements_with_icon": 116,
     "map_achievement_hints": 79,
     "achievements_matched_to_scene_or_derived_scene": 80,
-    "scenes": 33,
-    "raw_selectable_scene_declared_count": 35,
-    "loading_map_terms": 39,
-    "scenes_with_loading_map_name": 33
+    "scenes": 36,
+    "raw_selectable_scene_declared_count": 38,
+    "loading_map_terms": 44,
+    "scenes_with_loading_map_name": 36
   },
   "features": [
     {
@@ -1498,11 +1498,27 @@ window.PARTY_ANIMALS_SITE_DATA.achievements = {
       "game_mode": "Kart"
     },
     {
+      "scene_id": 64,
+      "scene_name": "AKDD_Island",
+      "display_name": "Cast-a-Way",
+      "display_name_zh": "荒岛环线",
+      "bundle_name": "map-ae_004012_akdd_island",
+      "game_mode": "Kart"
+    },
+    {
       "scene_id": 65,
       "scene_name": "AKDD_Stadium",
       "display_name": "Formula Wild",
       "display_name_zh": "猛兽方程式",
       "bundle_name": "map-ae_004629_akdd_stadium",
+      "game_mode": "Kart"
+    },
+    {
+      "scene_id": 68,
+      "scene_name": "AKDD_Band",
+      "display_name": "Rock n Roar",
+      "display_name_zh": "猛兽摇滚乐",
+      "bundle_name": "map-ae_005111_akdd_band",
       "game_mode": "Kart"
     },
     {
@@ -1516,8 +1532,8 @@ window.PARTY_ANIMALS_SITE_DATA.achievements = {
     {
       "scene_id": 73,
       "scene_name": "AE_005198_FightClub_SummerCabin",
-      "display_name": "Spring Cabin",
-      "display_name_zh": "春季小屋",
+      "display_name": "Summer Cabin",
+      "display_name_zh": "夏季小屋",
       "bundle_name": "map-ae_005198_fightclub_summercabin",
       "game_mode": "MiniGame"
     },
@@ -1536,6 +1552,14 @@ window.PARTY_ANIMALS_SITE_DATA.achievements = {
       "display_name_zh": "鲨鱼湾",
       "bundle_name": "map-ae_006069_shipwrecks_original",
       "game_mode": "LastStand4Team"
+    },
+    {
+      "scene_id": 80,
+      "scene_name": "AKDD_Sky",
+      "display_name": "Sky Ruins",
+      "display_name_zh": "天空遗迹",
+      "bundle_name": "map-ae_006160_akdd_sky",
+      "game_mode": "Kart"
     }
   ]
 };
