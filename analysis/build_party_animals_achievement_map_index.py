@@ -293,12 +293,6 @@ def find_scene_for_action(
 ) -> tuple[str | None, dict[str, Any] | None]:
     zh_hint = extract_quoted_map_name(action.get("zh-CN", ""))
     en_hint = extract_quoted_map_name(action.get("en", ""))
-    for hint in [zh_hint, en_hint]:
-        if not hint:
-            continue
-        scene = scene_by_name.get(hint) or scene_by_name.get(normalize_name(hint))
-        if scene:
-            return hint, scene
     for prefix, scene_name in ACTION_SCENE_ALIASES.items():
         if action_id.startswith(prefix):
             scene = scene_by_name.get(scene_name) or scene_by_name.get(normalize_name(scene_name))
@@ -307,6 +301,12 @@ def find_scene_for_action(
     for prefix, scene in sorted(DERIVED_ACTION_SCENES.items(), key=lambda item: len(item[0]), reverse=True):
         if action_id.startswith(prefix):
             return zh_hint or en_hint or scene.get("display_name_zh"), scene
+    for hint in [zh_hint, en_hint]:
+        if not hint:
+            continue
+        scene = scene_by_name.get(hint) or scene_by_name.get(normalize_name(hint))
+        if scene:
+            return hint, scene
     return zh_hint or en_hint, None
 
 

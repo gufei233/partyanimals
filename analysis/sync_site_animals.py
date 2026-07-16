@@ -49,9 +49,14 @@ def sync_animal_images(animals: list[dict]) -> tuple[list[dict], dict[str, int]]
         "images_removed": 0,
     }
     for animal in animals:
-        source = ROOT / animal["image"]
         target = SITE_ANIMALS_DIR / f"{animal['hero_id']}.png"
         keep_paths.add(target)
+        source_value = animal.get("image")
+        if not isinstance(source_value, str) or not source_value:
+            stats["images_missing"] += 1
+            copied.append({**animal, "image": None})
+            continue
+        source = ROOT / source_value
         if not source.exists():
             stats["images_missing"] += 1
             copied.append({**animal, "image": None})

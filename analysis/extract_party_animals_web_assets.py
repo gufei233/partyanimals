@@ -268,7 +268,12 @@ def build_catalog_manifest(catalog: dict[str, Any]) -> list[dict[str, Any]]:
     return rows
 
 
-def decrypt_target_bundles(rows: list[dict[str, Any]], catalog: dict[str, Any]) -> None:
+def decrypt_target_bundles(
+    rows: list[dict[str, Any]],
+    catalog: dict[str, Any],
+    *,
+    force_refresh: bool = False,
+) -> None:
     bundles = {
         row["dependency_bundle"]
         for row in rows
@@ -280,7 +285,7 @@ def decrypt_target_bundles(rows: list[dict[str, Any]], catalog: dict[str, Any]) 
         pass
     for bundle in sorted(bundles):
         out_path = DECRYPTED_BUNDLE_DIR / bundle
-        if out_path.exists() and out_path.read_bytes().startswith(b"UnityFS"):
+        if not force_refresh and out_path.exists() and out_path.read_bytes().startswith(b"UnityFS"):
             continue
         decrypt_bundles(DEFAULT_GAME_DIR, Path("analysis/decrypted"), CATALOG_PATH, 0, bundle.removesuffix(".bundle"))
 
@@ -659,10 +664,10 @@ def copy_known_site_assets(exported: dict[str, dict[str, Any]]) -> dict[str, Any
     }
 
 
-def build_resources_manifest() -> dict[str, Any]:
+def build_resources_manifest(*, force_bundle_refresh: bool = False) -> dict[str, Any]:
     catalog = json.loads(CATALOG_PATH.read_text(encoding="utf-8"))
     rows = build_catalog_manifest(catalog)
-    decrypt_target_bundles(rows, catalog)
+    decrypt_target_bundles(rows, catalog, force_refresh=force_bundle_refresh)
     exported = export_group_images(rows)
     account_portraits = load_account_portraits(catalog)
     site_report = copy_known_site_assets(exported)

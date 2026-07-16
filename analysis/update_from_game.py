@@ -44,6 +44,7 @@ def main() -> int:
     }
     web_assets.DEFAULT_GAME_DIR = args.game_dir
     web_data.DEFAULT_GAME_DIR = args.game_dir
+    web_data.set_bundle_refresh_mode(not args.skip_decrypt)
 
     if not args.skip_decrypt:
         hybridclr = decrypt_hybridclr(args.game_dir, DECRYPTED_DIR)
@@ -56,7 +57,7 @@ def main() -> int:
             }
         )
 
-    manifest = build_resources_manifest()
+    manifest = build_resources_manifest(force_bundle_refresh=not args.skip_decrypt)
     manifest_path = EXTRACTED_DIR / "resources_manifest.json"
     write_json(manifest_path, manifest)
     report["steps"].append(

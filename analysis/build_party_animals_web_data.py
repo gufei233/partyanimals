@@ -39,6 +39,14 @@ LOCALIZATION_PRIMARY_KEYS = {
 }
 ZH_CN = "Chinese (Simplified)"
 VARIANT_AVATAR_DIR = EXTRACTED_DIR / "variant_avatars"
+FORCE_BUNDLE_REFRESH = False
+_REFRESHED_BUNDLES: set[str] = set()
+
+
+def set_bundle_refresh_mode(enabled: bool) -> None:
+    global FORCE_BUNDLE_REFRESH
+    FORCE_BUNDLE_REFRESH = enabled
+    _REFRESHED_BUNDLES.clear()
 
 
 def read_catalog() -> dict[str, Any]:
@@ -65,9 +73,11 @@ def localization_dependency_report(catalog: dict[str, Any]) -> dict[str, Any]:
 
 def ensure_bundle(bundle: str) -> None:
     out_path = DECRYPTED_BUNDLE_DIR / bundle
-    if out_path.exists() and out_path.read_bytes().startswith(b"UnityFS"):
+    needs_forced_refresh = FORCE_BUNDLE_REFRESH and bundle not in _REFRESHED_BUNDLES
+    if not needs_forced_refresh and out_path.exists() and out_path.read_bytes().startswith(b"UnityFS"):
         return
     decrypt_bundles(DEFAULT_GAME_DIR, Path("analysis/decrypted"), CATALOG_PATH, 0, bundle.removesuffix(".bundle"))
+    _REFRESHED_BUNDLES.add(bundle)
 
 
 def extract_localization_terms() -> dict[str, Any]:
