@@ -14,7 +14,7 @@ from Crypto.Util.Padding import unpad
 DEFAULT_GAME_DIR = Path(r"F:\SteamLibrary\steamapps\common\Party Animals")
 HOT_UPDATE_KEY = b"X2v8pL0qWm9sYt3B"
 CATALOG_KEY = b"4X8HH3QBGVS7O8X2"
-HEO_HASH_METADATA_OFFSET = 0x17A0010
+HEO_HASH_METADATA_OFFSET = 0x17AB658
 
 
 def aes_ecb_decrypt(data: bytes, key: bytes) -> bytes:

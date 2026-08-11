@@ -4,6 +4,12 @@
 
 保留中文版是有意的。本项目的路径、站点文案和主要验收语义都是中文；命令、代码标识符和原始错误保持英文即可。不要因为文档是中文而自行翻译游戏 id、资源 key 或日志。
 
+本文档是无 BOM 的 UTF-8 文件。Windows PowerShell 5.1 默认编码可能把中文显示成乱码；通过终端读取时显式指定 UTF-8：
+
+```powershell
+Get-Content analysis\RESOURCE_SYNC_WORKFLOW.md -Encoding UTF8 -Raw
+```
+
 ## 目标与原则
 
 站点最终使用这些由游戏资源生成的文件：
@@ -74,9 +80,12 @@ Il2CppDumper、Capstone 等只在 HEO 参数变化时用于诊断，不是日常
 Get-Item "F:\SteamLibrary\steamapps\common\Party Animals\GameAssembly.dll"
 Get-Item "F:\SteamLibrary\steamapps\common\Party Animals\PartyAnimals_Data\il2cpp_data\Metadata\global-metadata.dat"
 Get-Item "F:\SteamLibrary\steamapps\common\Party Animals\PartyAnimals_Data\StreamingAssets\aa\catalog.json"
+Get-FileHash -Algorithm SHA256 "F:\SteamLibrary\steamapps\common\Party Animals\GameAssembly.dll"
+Get-FileHash -Algorithm SHA256 "F:\SteamLibrary\steamapps\common\Party Animals\PartyAnimals_Data\il2cpp_data\Metadata\global-metadata.dat"
+Get-FileHash -Algorithm SHA256 "F:\SteamLibrary\steamapps\common\Party Animals\PartyAnimals_Data\StreamingAssets\aa\catalog.json"
 ```
 
-记录大小和修改时间，短暂等待后再次检查。只要这些文件仍在变化，就停止分析并等待更新完成。
+记录大小、修改时间和 SHA-256，短暂等待后再次检查，并在完整更新结束后再检查一次。只要这些文件仍在变化，就停止分析并等待更新完成。最终报告应保留本次使用的源文件指纹；仅凭“命令跑通”不能证明运行期间没有混入另一版本。
 
 游戏更新过程中可能出现“新 catalog / 新配置表 + 旧 bundle”的混合状态。典型表现是只有一个新动物 `image: null`，或同一条目在连续运行间 id 发生变化。这时不要手工补图，也不要立即修改资源 key；先让游戏更新完成，再跑完整更新。
 
@@ -93,6 +102,16 @@ git status --short --branch
 ```powershell
 python -X utf8 -m py_compile analysis\extract_party_animals_web_assets.py analysis\build_party_animals_web_data.py analysis\export_party_animals_resource_index.py analysis\build_party_animals_achievement_map_index.py analysis\sync_site_animals.py analysis\sync_site_achievements.py analysis\update_from_game.py analysis\decrypt_party_animals.py analysis\scan_party_animals_assets.py
 ```
+
+### 4. 快速检查 HEO 参数是否仍像有效数据
+
+在完整更新前读取一次当前 `HEO_HASH_METADATA_OFFSET` 指向的 128 项数组：
+
+```powershell
+python -X utf8 -c "import sys; sys.path.insert(0, 'analysis'); import decrypt_party_animals as d; values=d.load_heo_hash(d.DEFAULT_GAME_DIR); print({'offset': hex(d.HEO_HASH_METADATA_OFFSET), 'count': len(values), 'unique': len(set(values)), 'min': min(values), 'max': max(values), 'first16': values[:16]})"
+```
+
+当前已验证版本应得到 128 个唯一整数，且为 `128..255` 的排列。如果出现大量 `0`、可读字符串对应的大整数、极大正负值或很低的唯一值数量，不要继续批量解密；优先按后文的 HEO 排查流程重新定位偏移。这是快速异常信号，不是要求未来版本永远使用相同排列。
 
 ## 从零完整更新
 
@@ -120,6 +139,14 @@ python -X utf8 analysis\update_from_game.py --game-dir "F:\SteamLibrary\steamapp
 - `animals_with_image == animals`
 - 动物和成就的 `images_missing == 0`
 - 没有意外删除仍被引用的图片
+
+保留完整更新的 JSON 输出，至少记录源文件指纹、各步骤统计和失败 bundle 名称。更新结果通常属于三类：
+
+1. 游戏内容变化：生成数据或站点图片发生可解释的新增、修改或删除；
+2. 仅解析参数变化：例如 HEO 元数据偏移更新，但生成数据与图片保持不变；
+3. 完全无变化：当前解析参数和站点资源都已是最新状态。
+
+第二类和第三类都是合法结果。不要为了制造站点 diff 而手工修改生成数据。
 
 如果游戏文件在运行中发生过变化，即使某次完整更新成功，也应在文件稳定后重新执行一次完整更新。
 
@@ -226,7 +253,7 @@ python -X utf8 analysis\update_from_game.py --skip-decrypt
 
 先怀疑 `CATALOG_KEY` 变化：
 
-1. 运行 `analysis/scan_party_animals_assets.py`。
+1. 运行 `python -X utf8 analysis\scan_party_animals_assets.py`。脚本会生成 `analysis/party_animals_asset_scan.json`；它是临时诊断产物，交付前应删除。
 2. 检查 `LoadContentCatalogAsync`、`AAInitializer`、`CryptoManager`、`AESStreamProcessor` 相关字符串。
 3. 只有证明 key 变化后，才修改 `analysis/decrypt_party_animals.py`。
 
@@ -257,17 +284,20 @@ python -X utf8 analysis\update_from_game.py --skip-decrypt
 1. 确认游戏更新已完成，重新解密 catalog。
 2. 只选择一个确定存在的失败 bundle，用 `--bundle-name` 解密并用 UnityPy 加载。
 3. 打印 `heo_params()` 的 `key` 和 `reserved_pos`。如果 128 项数组包含大量 `0`、字符串样的大整数或离谱位置，优先怀疑元数据偏移，而不是 Cipher 算法。
-4. 使用当前 `GameAssembly.dll` 和 `global-metadata.dat` 运行 Il2CppDumper，定位 `UnityEngine.ResourceManagement.ResourceProviders.HeoStream`。
-5. 检查 `.ctor`、`Cipher` 和 `.cctor`：确认固定 key、逐 8 字节 XOR 逻辑，以及 `.cctor` 通过 `RuntimeHelpers.InitializeArray` 初始化的 128 项 `int[] s_Hash`。
-6. 在 `dump.cs` 的 `<PrivateImplementationDetails>` 中找到被该 `.cctor` 引用的 512 字节静态数组，使用它标注的 `Metadata offset` 更新 `HEO_HASH_METADATA_OFFSET`。
-7. 先验证单个 bundle 能被 UnityPy 加载，再运行完整更新。
+4. 在独立的 `analysis/.tmp_*` 目录中，使用当前 `GameAssembly.dll` 和 `global-metadata.dat` 运行 Il2CppDumper，定位 `UnityEngine.ResourceManagement.ResourceProviders.HeoStream`。不要把 `dump.cs`、`script.json`、`DummyDll/` 等输出放到仓库常规目录。
+5. 在 `dump.cs` 中记录 `.ctor`、`Cipher` 和 `.cctor` 的 RVA 与文件 `Offset`：确认固定 key、逐 8 字节 XOR 逻辑，以及 `.cctor` 通过 `RuntimeHelpers.InitializeArray` 初始化的 128 项 `int[] s_Hash`。
+6. 从 `.cctor` 的文件 `Offset` 反汇编当前 `GameAssembly.dll`，定位传给 `RuntimeHelpers.InitializeArray` 的字段句柄。Windows x64 构建中通常表现为在调用前把一个 RIP 相对全局地址装入 `rdx`。
+7. 计算该 RIP 相对目标地址，减去模块基址得到 RVA，并在 `script.json` 的 `Address` 项中查找对应十进制值。目标应映射到 `Field$<PrivateImplementationDetails>.<hash>`，而不是凭数组内容在整个元数据中盲搜。
+8. 回到 `dump.cs` 查找该 `<PrivateImplementationDetails>` 字段，确认类型大小为 512 字节，并使用它标注的 `Metadata offset` 更新 `HEO_HASH_METADATA_OFFSET`。
+9. 用新偏移读取 128 项数组并检查数量、唯一值、范围；再解密一个失败 bundle，要求明文确实发生变化且 UnityPy 能成功加载。
+10. 单 bundle 验证通过后再运行完整更新。Il2CppDumper 某些版本在已经输出 `Done!` 和全部产物后，可能因非交互终端中的 `Press any key to exit...` 以非零状态退出；先检查产物完整性，不要仅凭最后的退出码丢弃已完成的 dump。
 
-2026-07-16 当前版本的已验证结果：
+已验证的版本证据：
 
-- `HEO_HASH_METADATA_OFFSET = 0x17A0010`
-- `s_Hash` 是 128 个整数，当前恰为 `128..255` 的排列
-- `HeoStream` 固定 key 仍为 `0x7C`
-- `Cipher` 算法未变化，变化的只是静态数组位置
+| 日期 | `HEO_HASH_METADATA_OFFSET` | `s_Hash` | 固定 key | `Cipher` |
+| --- | --- | --- | --- | --- |
+| 2026-07-16 | `0x17A0010` | 128 项，`128..255` 的排列 | `0x7C` | 未变化 |
+| 2026-08-11 | `0x17AB658` | 128 项，`128..255` 的排列 | `0x7C` | 未变化 |
 
 这些值是版本证据，不是永久常量。下次游戏更新后必须重新验证，不能盲目复用。
 
@@ -289,7 +319,22 @@ python -X utf8 analysis\update_from_game.py --skip-decrypt
 
 如果只缺少少量图标，也应视为未完成：检查资源组的 catalog/export 数量、对应 primary key 和依赖 bundle。
 
-## 2026-07-16 参考基线
+## 同步参考基线
+
+### 2026-08-11 当前验证结果
+
+- 完整更新和 `--skip-decrypt` 快速重建均成功；
+- `HEO_HASH_METADATA_OFFSET = 0x17AB658`；
+- 动物：70，带图：70，特征：11；
+- 成就：116，成就图片：116，地图筛选：24；
+- portraits：151 / 151；
+- portrait_alpha：151 / 151；
+- achievements：119 / 119；
+- perks：110 / 110；
+- 所有站点图片均为 unchanged，生成数据与 2026-07-16 内容基线一致；
+- 本次属于“仅解析参数变化”：更新了解密偏移，没有资源数据或图片 diff。
+
+### 2026-07-16 内容基线
 
 这次成功同步的报告是：
 
@@ -306,18 +351,31 @@ python -X utf8 analysis\update_from_game.py --skip-decrypt
 
 这些数字只用于发现异常变化，不应写成永久断言。游戏新增或删除内容后，以当前配置表、catalog 和同步报告为准。
 
+## 临时产物与退出检查
+
+交付前同时检查 Git 差异和 `analysis/` 顶层的忽略项；普通 `git status` 不会自动显示被 `.gitignore` 隐藏的临时产物：
+
+```powershell
+git status --short
+Get-ChildItem analysis -Force | Where-Object { $_.Name -like '.tmp_*' -or $_.Name -like 'il2cppdump_out*' -or $_.Name -eq '__pycache__' -or $_.Name -eq 'party_animals_asset_scan.json' }
+```
+
+只删除本次诊断明确创建的临时路径。递归删除前先解析并核对绝对路径确实位于 `E:\Desktop\partyanimals\analysis\`；不要删除需要保留用于幂等验证的 `analysis/decrypted/` 和 `analysis/extracted/`。Il2CppDumper 的压缩包、`dump.cs`、`script.json`、`il2cpp.h`、`DummyDll/`、测试 bundle 和扫描 JSON 均不应出现在最终工作树中。
+
 ## 交付前检查清单
 
-1. 游戏更新已经完成，关键源文件在同步期间保持稳定。
+1. 游戏更新已经完成，关键源文件的大小、时间和 SHA-256 在同步期间保持稳定，最终报告保留了本次版本指纹。
 2. 所有同步脚本 `py_compile` 通过。
-3. 完整更新可以跑通。
-4. 完整更新中各资源组 `exported_count == catalog_sprite_count`。
-5. `animals_with_image == animals`，动物和成就 `images_missing == 0`。
-6. `python -X utf8 analysis\update_from_game.py --skip-decrypt` 可以跑通且结果幂等。
-7. `analysis/extracted/resources_manifest.json` 存在。
-8. `data/achievements.generated.js` 不包含 `sceneId`、`mapNameEn`、`sceneName`、`sceneMatch`。
-9. 动物图片路径为 `images/animals/H*.png`，引用数、文件数和动物数一致。
-10. 成就图片路径为 `images/achievements/ACV*.png`，文件数和成就数一致。
-11. 新增场景没有错误劫持旧教程、剧情或特殊模式成就。
-12. `git diff --check` 通过，生成数据 diff 已人工核对。
-13. `git status` 中没有意外缓存、临时工具、测试 bundle 或日志。
+3. HEO 参数快速检查没有明显异常；如果修改了偏移，已完成单 bundle UnityPy 加载验证。
+4. 完整更新可以跑通，并保留了完整 JSON 报告。
+5. 完整更新中各资源组 `exported_count == catalog_sprite_count`。
+6. `animals_with_image == animals`，动物和成就 `images_missing == 0`。
+7. `python -X utf8 analysis\update_from_game.py --skip-decrypt` 可以跑通且结果幂等。
+8. `analysis/extracted/resources_manifest.json` 存在。
+9. `data/achievements.generated.js` 不包含 `sceneId`、`mapNameEn`、`sceneName`、`sceneMatch`。
+10. 动物图片路径为 `images/animals/H*.png`，引用数、文件数和动物数一致。
+11. 成就图片路径为 `images/achievements/ACV*.png`，文件数和成就数一致。
+12. 新增场景没有错误劫持旧教程、剧情或特殊模式成就。
+13. 已将结果归类为“内容变化”“仅解析参数变化”或“完全无变化”，所有 diff 均有来源解释。
+14. `git diff --check` 通过，生成数据 diff 已人工核对。
+15. `git status --short` 和 `analysis/` 顶层临时产物检查中没有意外工具、测试 bundle、扫描 JSON 或日志。
